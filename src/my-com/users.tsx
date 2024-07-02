@@ -21,6 +21,8 @@ const Users = () => {
             existingUsers.filter((u: any) => cache.identify(u) !== deletedId),
         },
       });
+
+      cache.evict({ id: deletedId });
     },
   });
   const deleteHandler = (id: string) => {
