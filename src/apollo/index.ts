@@ -15,7 +15,23 @@ const httpLink = new HttpLink({
 
 const client = new ApolloClient({
   link: from([retryLink, httpLink]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          users: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return [
+                ...existing,
+                ...incoming
+              ]
+            },
+          },
+        },
+      }
+    }
+  }),
 });
 
 export default client;

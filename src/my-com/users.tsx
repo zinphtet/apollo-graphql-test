@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "@apollo/client";
 import { EditBtn } from "./dialog";
 const Users = () => {
-  const { loading, error, data } = useQuery(GET_USERS);
+  const { loading, error, data, fetchMore } = useQuery(GET_USERS, {
+    variables: {
+      take: 2,
+      skip: 0,
+    }
+  });
   const [deleteUser] = useMutation(DELETE_USER, {
     // awaitRefetchQueries: true,
     // refetchQueries: [{ query: GET_USERS }],
@@ -49,6 +54,16 @@ const Users = () => {
           </div>
         </div>
       ))}
+
+      <div>
+        <Button onClick={() => fetchMore({
+          variables: {
+            skip: users.length
+          }
+        })}>
+          Fetch More
+        </Button>
+      </div>
     </div>
   );
 };
